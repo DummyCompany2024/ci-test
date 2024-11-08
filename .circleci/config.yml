@@ -1,38 +1,4 @@
 version: 2.1
 
-orbs:
-  macos: circleci/macos@2.5.1
-
-executors:
-  arch-executor:
-    resource_class: macos.m1.medium.gen1
-    macos:
-      xcode: '15.2.0'
-commands:
-  install-dependencies:
-    steps:
-      - run:
-          command: |
-            bundle install
-  run-tests:
-    steps:
-      - run: bundle exec fastlane run_spm_tests
-jobs:
-  build:
-    executor: arch-executor
-    steps:
-      - checkout
-      - install-dependencies
-      - run-tests
-
-workflows:
-  validate-codebase:
-    jobs:
-      - enable-ci:
-          type: approval
-          filters:
-            branches:
-              ignore: master
-      - build:
-          requires:
-            - enable-ci
+import:
+  - https://github.com/lchavezpozo/ci-config/blob/main/config.yml
